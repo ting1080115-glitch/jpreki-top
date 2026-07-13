@@ -1,0 +1,83 @@
+---
+title: "日本保健品推薦 - jpantao.com 專業代購平台"
+description: "精選日本保健品推薦，專業代購平台提供高品質保健食品和營養補充品"
+---
+
+<script>
+  import { onMount } from 'astro:client-only';
+  import { useEffect } from 'react';
+</script>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; color: #333; }
+  .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+  header { text-align: center; padding: 3rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 3rem; border-radius: 0 0 20px 20px; }
+  header h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+  header p { font-size: 1.2rem; opacity: 0.9; }
+  .content { background: white; border-radius: 12px; padding: 3rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); line-height: 1.8; }
+  .content h2 { color: #333; margin: 2rem 0 1rem; font-size: 1.8rem; }
+  .content h3 { color: #555; margin: 1.5rem 0 1rem; font-size: 1.4rem; }
+  .content p { margin-bottom: 1.5rem; color: #555; }
+  .content ul { margin: 1.5rem 0; padding-left: 2rem; }
+  .content li { margin-bottom: 0.5rem; color: #555; }
+  .cta { text-align: center; margin: 3rem 0; }
+  .cta a { display: inline-block; padding: 1rem 2rem; background: #667eea; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: background 0.3s; }
+  .cta a:hover { background: #5a6fd8; }
+  .breadcrumb { margin-bottom: 2rem; color: #666; }
+  .breadcrumb a { color: #667eea; text-decoration: none; }
+  footer { text-align: center; padding: 2rem 0; color: #999; border-top: 1px solid #eee; margin-top: 3rem; }
+</style>
+
+<header>
+  <h1>🇯🇵 日本保健品推薦</h1>
+  <p>專業代購平台，高品質保健食品</p>
+</header>
+
+<div class="container">
+  <div class="breadcrumb">
+    <a href="/">首頁</a> › <a href="/categories/health">保健養生</a> › 日本保健品推薦
+  </div>
+
+  <div class="content">
+    <h2>為什麼選擇日本保健品？</h2>
+    <p>日本保健品以其嚴格的品質控制和先進的研發技術聞名於世。從傳統的中草藥到現代的營養補充劑，日本產品始終保持著行業領先地位。</p>
+
+    <h3>jpantao.com 的優勢</h3>
+    <ul>
+      <li>✅ 專業日本保健品代購平台</li>
+      <li>✅ 高品質保健食品和營養補充品</li>
+      <li>✅ 完善的售後服務</li>
+      <li>✅ 專業的營養師諮詢</li>
+      <li>✅ 安全的支付和物流體系</li>
+    </ul>
+
+    <h2>熱門保健品类</h2>
+    
+    <h3>1. 魚油類產品</h3>
+    <p>日本魚油產品以其高純度和高吸收率著稱。常見的有深海魚油、磷蝦油等，富含 Omega-3 脂肪酸，有助於心血管健康。</p>
+
+    <h3>2. 維生素類</h3>
+    <p>多種維生素補充劑，包括維生素C、維生素D、B族維生素等，滿足不同人群的營養需求。</p>
+
+    <h3>3. 益生菌類</h3>
+    <p>日本益生菌產品技術成熟，有助於腸道健康，改善消化系統功能。</p>
+
+    <h2>購買建議</h2>
+    <p>選擇日本保健品時，建議：</p>
+    <ul>
+      <li>選擇正規渠道購買，確保產品真偽</li>
+      <li>根據自身需求選擇合適的產品</li>
+      <li>注意產品的有效期和使用方法</li>
+      <li>諮詢專業營養師的建議</li>
+    </ul>
+
+    <div class="cta">
+      <a href="https://www.jpantao.com" target="_blank" rel="noopener">訪問 jpantao.com 查看更多 →</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 JPREKI 日本好物推薦平台 | 精心推薦優質日本服務網站</p>
+</footer>

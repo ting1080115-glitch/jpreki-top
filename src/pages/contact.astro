@@ -1,0 +1,54 @@
+---
+title: "聯繫我們 - JPREKI 日本好物推薦平台"
+description: "聯繫 JPREKI 團隊，獲取更多日本好物推薦資訊"
+---
+
+<script>
+  import { onMount } from 'astro:client-only';
+  import { useEffect } from 'react';
+</script>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; color: #333; }
+  .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+  header { text-align: center; padding: 3rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 3rem; border-radius: 0 0 20px 20px; }
+  header h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+  header p { font-size: 1.2rem; opacity: 0.9; }
+  .content { background: white; border-radius: 12px; padding: 3rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); line-height: 1.8; }
+  .content h2 { color: #333; margin: 2rem 0 1rem; font-size: 1.8rem; }
+  .content p { margin-bottom: 1.5rem; color: #555; }
+  .contact-info { background: #f8f9fa; padding: 2rem; border-radius: 8px; margin: 2rem 0; }
+  .contact-info h3 { color: #333; margin-bottom: 1rem; }
+  .contact-info p { margin-bottom: 0.5rem; }
+  footer { text-align: center; padding: 2rem 0; color: #999; border-top: 1px solid #eee; margin-top: 3rem; }
+</style>
+
+<header>
+  <h1>📞 聯繫我們</h1>
+  <p>JPREKI 日本好物推薦平台</p>
+</header>
+
+<div class="container">
+  <div class="content">
+    <h2>如何聯繫我們</h2>
+    <p>如果您對我們的推薦網站有任何問題，或者需要更多資訊，歡迎通過以下方式聯繫我們：</p>
+    
+    <div class="contact-info">
+      <h3>聯繫方式</h3>
+      <p>📧 Email: contact@jpreki.top</p>
+      <p>💬 LINE: @jpreki</p>
+      <p>🌐 網站: https://jpreki.top</p>
+    </div>
+
+    <h2>合作洽談</h2>
+    <p>如果您是想推廣的日本服務商，歡迎聯繫我們探討合作機會。我們將仔細評估您的服務品質，為用戶提供最佳推薦。</p>
+
+    <h2>反饋建議</h2>
+    <p>我們重視每一位用戶的反饋。如果您有任何建議或意見，請隨時告訴我們，我們會持續改進服務品質。</p>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 JPREKI 日本好物推薦平台 | 精心推薦優質日本服務網站</p>
+</footer>

@@ -1,0 +1,83 @@
+---
+title: "日本代購服務 - jpchu.com 一站式代購"
+description: "一站式日本商品代購服務，涵蓋美妆、生活用品、電子產品等"
+---
+
+<script>
+  import { onMount } from 'astro:client-only';
+  import { useEffect } from 'react';
+</script>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; color: #333; }
+  .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+  header { text-align: center; padding: 3rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 3rem; border-radius: 0 0 20px 20px; }
+  header h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+  header p { font-size: 1.2rem; opacity: 0.9; }
+  .content { background: white; border-radius: 12px; padding: 3rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); line-height: 1.8; }
+  .content h2 { color: #333; margin: 2rem 0 1rem; font-size: 1.8rem; }
+  .content h3 { color: #555; margin: 1.5rem 0 1rem; font-size: 1.4rem; }
+  .content p { margin-bottom: 1.5rem; color: #555; }
+  .content ul { margin: 1.5rem 0; padding-left: 2rem; }
+  .content li { margin-bottom: 0.5rem; color: #555; }
+  .cta { text-align: center; margin: 3rem 0; }
+  .cta a { display: inline-block; padding: 1rem 2rem; background: #667eea; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; transition: background 0.3s; }
+  .cta a:hover { background: #5a6fd8; }
+  .breadcrumb { margin-bottom: 2rem; color: #666; }
+  .breadcrumb a { color: #667eea; text-decoration: none; }
+  footer { text-align: center; padding: 2rem 0; color: #999; border-top: 1px solid #eee; margin-top: 3rem; }
+</style>
+
+<header>
+  <h1>🛍️ 日本代購服務</h1>
+  <p>一站式代購，安全可靠</p>
+</header>
+
+<div class="container">
+  <div class="breadcrumb">
+    <a href="/">首頁</a> › <a href="/categories/shopping">代購服務</a> › 日本代購
+  </div>
+
+  <div class="content">
+    <h2>為什麼選擇 jpchu.com？</h2>
+    <p>jpchu.com 提供專業的一站式日本商品代購服務，涵蓋美妆、生活用品、電子產品等多種類別，直郵中國，安全可靠。</p>
+
+    <h3>服務優勢</h3>
+    <ul>
+      <li>✅ 豐富的商品種類</li>
+      <li>✅ 合理的價格體系</li>
+      <li>✅ 快速的物流配送</li>
+      <li>✅ 完善的售後服務</li>
+      <li>✅ 專業的客服團隊</li>
+    </ul>
+
+    <h2>熱門代購品类</h2>
+    
+    <h3>1. 美妆護膚</h3>
+    <p>日本美妆產品以其溫和有效的配方著稱，包括面霜、精華液、面膜等，深受消費者喜愛。</p>
+
+    <h3>2. 生活用品</h3>
+    <p>從家居用品到個人護理，日本生活品質產品以其精緻的設計和優良的品質贏得口碑。</p>
+
+    <h3>3. 電子產品</h3>
+    <p>日本電子產品以技術領先、質量可靠聞名，從相機到小家電，應有盡有。</p>
+
+    <h2>代購流程</h2>
+    <ul>
+      <li>1. 在 jpchu.com 選擇商品或提出代購需求</li>
+      <li>2. 確認訂單和支付</li>
+      <li>3. 專業團隊在日本採購</li>
+      <li>4. 國際物流直郵到家</li>
+      <li>5. 簽收確認，享受售後服務</li>
+    </ul>
+
+    <div class="cta">
+      <a href="https://www.jpchu.com" target="_blank" rel="noopener">訪問 jpchu.com 開始代購 →</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 JPREKI 日本好物推薦平台 | 精心推薦優質日本服務網站</p>
+</footer>

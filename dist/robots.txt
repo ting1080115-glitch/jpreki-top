@@ -1,0 +1,10 @@
+# Robot.txt for JPREKI Top
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://jpreki.top/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
