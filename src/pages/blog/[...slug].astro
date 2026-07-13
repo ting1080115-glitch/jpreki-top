@@ -1,0 +1,93 @@
+---
+export async function getStaticPaths() {
+  const fs = await import('fs');
+  const postsDir = './content/posts';
+  const paths = [];
+  if (fs.existsSync(postsDir)) {
+    const files = fs.readdirSync(postsDir).filter(f => f.endsWith('.md'));
+    for (const file of files) {
+      const slug = file.replace('.md', '');
+      paths.push({ params: { slug } });
+    }
+  }
+  return paths;
+}
+
+const fs = await import('fs');
+const postsDir = './content/posts';
+const slug = Astro.params.slug;
+let title = '文章';
+let description = '';
+let bodyHtml = '';
+let linkout = '';
+let tags = [];
+
+if (fs.existsSync(postsDir + '/' + slug + '.md')) {
+  const content = fs.readFileSync(postsDir + '/' + slug + '.md', 'utf-8');
+  const mTitle = content.match(/^title:\s*"([^"]+)"/m);
+  const mDesc = content.match(/^description:\s*"([^"]+)"/m);
+  const mLinkout = content.match(/^linkout:\s*"([^"]+)"/m);
+  const mBody = content.match(/^---\n[\s\S]*?\n---\n\n([\s\S]*)$/);
+  if (mTitle) title = mTitle[1];
+  if (mDesc) description = mDesc[1];
+  if (mLinkout) linkout = mLinkout[1];
+  if (mBody) {
+    let raw = mBody[1].trim();
+    // Simple markdown to HTML conversion
+    raw = raw.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    raw = raw.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+    raw = raw.replace(/^# (.+)$/gm, '<h2>$1</h2>');
+    raw = raw.replace(/^- (.+)$/gm, '<li>$1</li>');
+    raw = raw.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+    raw = raw.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+    raw = raw.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    raw = raw.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    raw = raw.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    raw = raw.replace(/^(?!<[hulb]|<blockquote)(.+)$/gm, '<p>$1</p>');
+    bodyHtml = raw;
+  }
+  const tagMatches = content.matchAll(/^  - (.+)$/gm);
+  for (const m of tagMatches) tags.push(m[1]);
+}
+---
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title} - JPREKI Blog</title>
+  {description && <meta name="description" content={description} />}
+  {tags.length > 0 && <meta name="keywords" content={tags.join(', ')} />}
+  {linkout && <link rel="canonical" href={linkout} />}
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8f9fa;color:#333;line-height:1.8;font-size:1.05rem}
+    .container{max-width:720px;margin:0 auto;padding:2rem}
+    h1{font-size:1.8rem;margin-bottom:1rem;line-height:1.4}
+    h2{font-size:1.3rem;margin:1.5rem 0 .8rem}
+    h3{font-size:1.1rem;margin:1.2rem 0 .6rem}
+    p{margin-bottom:1rem;color:#444}
+    ul{margin-bottom:1rem;padding-left:1.5rem}
+    li{margin-bottom:.3rem}
+    blockquote{border-left:3px solid #667eea;margin:1rem 0;padding:.5rem 1rem;background:#f0f0ff;color:#555}
+    a{color:#667eea}
+    header{padding:1rem 0;border-bottom:1px solid #eee;margin-bottom:2rem}
+    header a{color:#667eea;text-decoration:none;font-size:.9rem;margin-right:1rem}
+    .tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+    .tags span{background:#e8e8ff;color:#667eea;padding:.2rem .6rem;border-radius:12px;font-size:.8rem}
+    .linkout-btn{display:inline-block;margin:1rem 0;padding:.6rem 1.2rem;background:#667eea;color:#fff;border-radius:8px;text-decoration:none;font-size:.9rem}
+    footer{text-align:center;padding:2rem 0;color:#999;font-size:.85rem;border-top:1px solid #eee;margin-top:2rem}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header><a href="/blog/">← 部落格</a><a href="/">首頁</a></header>
+    <article>
+      <h1>{title}</h1>
+      {tags.length > 0 && <div class="tags">{tags.map(t => <span>{t}</span>)}</div>}
+      {linkout && <a href={linkout} class="linkout-btn" target="_blank" rel="noopener">前往推薦網站 →</a>}
+      <div set:html={bodyHtml}></div>
+    </article>
+    <footer>© 2026 JPREKI 日本好物推薦平台</footer>
+  </div>
+</body>
+</html>

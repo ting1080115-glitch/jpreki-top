@@ -1,41 +1,26 @@
 ---
-title: "網站地圖"
-description: "JPREKI 日本好物推薦平台網站地圖"
+const fs = await import('fs');
+const postsDir = './content/posts';
+const posts = [];
+if (fs.existsSync(postsDir)) {
+  const files = fs.readdirSync(postsDir).filter(f => f.endsWith('.md'));
+  for (const file of files) {
+    const slug = file.replace('.md', '');
+    const content = fs.readFileSync(postsDir + '/' + file, 'utf-8');
+    const mDate = content.match(/^date:\s*(\d{4}-\d{2}-\d{2})/m);
+    posts.push({ slug, date: mDate ? mDate[1] : '2026-07-14' });
+  }
+}
+const today = '2026-07-14';
 ---
-
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8f9fa; color: #333; }
-  .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
-  header { text-align: center; padding: 3rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 3rem; border-radius: 0 0 20px 20px; }
-  header h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-  .content { background: white; border-radius: 12px; padding: 3rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-  .content h2 { color: #333; margin: 2rem 0 1rem; font-size: 1.8rem; }
-  .content a { color: #667eea; text-decoration: none; display: block; padding: 0.5rem 0; border-bottom: 1px solid #eee; }
-  .content a:hover { color: #5a6fd8; }
-  footer { text-align: center; padding: 2rem 0; color: #999; border-top: 1px solid #eee; margin-top: 3rem; }
-</style>
-
-<header>
-  <h1>📍 網站地圖</h1>
-  <p>JPREKI 日本好物推薦平台</p>
-</header>
-
-<div class="container">
-  <div class="content">
-    <h2>主要網站</h2>
-    <a href="/jpantao-rec">🇯🇵 日本保健品推薦 - jpantao.com</a>
-    <a href="/donaa-rec">🎮 遊戲實名認證 - donaa.org</a>
-    <a href="/jpchurec">🛍️ 日本代購服務 - jpchu.com</a>
-    <a href="/777dairec">🆔 Apple ID 實名認證 - 777dai.com</a>
-    <a href="/77jpchurec">🌏 日本跨境購物 - 77jpchu.com</a>
-    
-    <h2>關於我們</h2>
-    <a href="/about">📖 關於 JPREKI</a>
-    <a href="/contact">📞 聯繫我們</a>
-  </div>
-</div>
-
-<footer>
-  <p>© 2026 JPREKI 日本好物推薦平台 | 精心推薦優質日本服務網站</p>
-</footer>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://jpreki.top/</loc><lastmod>{today}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://jpreki.top/jpantao-rec</loc><lastmod>{today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jpreki.top/donaa-rec</loc><lastmod>{today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jpreki.top/jpchurec</loc><lastmod>{today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jpreki.top/777dairec</loc><lastmod>{today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jpreki.top/77jpchurec</loc><lastmod>{today}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://jpreki.top/blog/</loc><lastmod>{today}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  {posts.map(p => <url><loc>https://jpreki.top/blog/{encodeURIComponent(p.slug)}</loc><lastmod>{p.date}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>)}
+</urlset>

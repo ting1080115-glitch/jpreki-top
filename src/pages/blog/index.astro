@@ -1,0 +1,55 @@
+---
+const fs = await import('fs');
+const postsDir = './content/posts';
+const items = [];
+
+if (fs.existsSync(postsDir)) {
+  const files = fs.readdirSync(postsDir).filter(f => f.endsWith('.md'));
+  for (const file of files) {
+    const content = fs.readFileSync(postsDir + '/' + file, 'utf-8');
+    const slug = file.replace('.md', '');
+    const mTitle = content.match(/^title:\s*"([^"]+)"/m);
+    const mDesc = content.match(/^description:\s*"([^"]+)"/m);
+    const title = mTitle ? mTitle[1] : slug;
+    const desc = mDesc ? mDesc[1] : '';
+    items.push({ title, description: desc, slug, file });
+  }
+  items.reverse();
+}
+---
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JPREKI Blog</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8f9fa;color:#333}
+    .container{max-width:800px;margin:0 auto;padding:2rem}
+    h1{font-size:2rem;margin-bottom:.5rem}
+    .sub{color:#666;margin-bottom:2rem}
+    .post{border:1px solid #eee;background:#fff;border-radius:12px;padding:1.5rem;margin-bottom:1rem}
+    .post h2{font-size:1.2rem;margin-bottom:.5rem}
+    .post h2 a{color:#333;text-decoration:none}
+    .post p{color:#666;font-size:.95rem}
+    .meta{color:#999;font-size:.8rem;margin-top:.5rem}
+    header{text-align:center;padding:2rem 0 1rem}
+    header a{color:#667eea;text-decoration:none;font-size:.9rem}
+  </style>
+</head>
+<body>
+  <header><a href="/">← 返回首頁</a></header>
+  <div class="container">
+    <h1>📝 JPREKI 部落格</h1>
+    <p class="sub">日本好物推薦、選購指南與實用資訊</p>
+    {items.length === 0 && <p>暫無文章</p>}
+    {items.map(item => (
+      <div class="post">
+        <h2><a href={'/blog/' + encodeURIComponent(item.slug)}>{item.title}</a></h2>
+        {item.description && <p>{item.description}</p>}
+        <div class="meta">{item.file.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace('.md','')}</div>
+      </div>
+    ))}
+  </div>
+</body>
+</html>
