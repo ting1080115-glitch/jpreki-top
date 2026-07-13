@@ -1,0 +1,34 @@
+backend:
+  name: github
+  repo: ting1080115-glitch/jpreki-top
+  branch: main
+  base_url: https://jpreki-top.pages.dev
+  auth_endpoint: api/auth
+
+media_folder: assets/images
+public_folder: /assets/images
+locale: zh_Hant
+
+collections:
+  - name: posts
+    label: "📝 文章管理"
+    folder: content/posts
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "標題", name: "title", widget: "string" }
+      - { label: "摘要", name: "description", widget: "string" }
+      - { label: "發佈日期", name: "date", widget: "datetime" }
+      - label: "分類"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "🏥 保健養生 → jpantao.com", value: "health" }
+          - { label: "🎮 遊戲服務 → 77jpchu.com / 777dai.com", value: "gaming" }
+          - { label: "📦 代購服務 → 77jpchu.com / 777dai.com", value: "proxy" }
+          - { label: "🍎 Apple 服務 → donaa.org", value: "apple" }
+          - { label: "🌍 跨境購物 → jpchu.com", value: "shopping" }
+      - { label: "目標站點外鏈", name: "linkout", widget: "string", required: false }
+      - { label: "標籤", name: "tags", widget: "list", allow_add: true, required: false }
+      - { label: "封面圖", name: "cover", widget: "image", required: false }
+      - { label: "內容", name: "body", widget: "markdown" }
