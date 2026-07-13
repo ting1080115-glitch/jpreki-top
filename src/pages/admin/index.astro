@@ -1,16 +1,157 @@
 ---
 title: "Admin - JPREKI Blog"
-description: "JPREKI 博客管理後台"
+description: "JPREKI 管理後台"
 ---
 
 <html lang="zh-TW">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>JPREKI Blog - 管理後台</title>
-    <link rel="stylesheet" href="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.css" />
-  </head>
-  <body>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JPREKI 管理後台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;color:#333}
+#login{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh}
+#login h2{margin-bottom:1.5rem;font-size:1.5rem}
+#login input{padding:.8rem;margin-bottom:.5rem;width:300px;border:1px solid #ddd;border-radius:8px;font-size:1rem;outline:0}
+#login input:focus{border-color:#667eea}
+#login button{padding:.8rem 2rem;background:#667eea;color:#fff;border:none;border-radius:8px;font-size:1rem;cursor:pointer;margin-top:.5rem}
+#login button:hover{background:#5a6fd8}
+#login .error{color:#e53e3e;margin-top:.5rem;display:none}
+#dashboard{display:none;max-width:1000px;margin:0 auto;padding:2rem}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
+header h1{font-size:1.3rem}
+header button{padding:.5rem 1rem;background:#e53e3e;color:#fff;border:none;border-radius:6px;cursor:pointer}
+.editor-wrap{background:#fff;border-radius:12px;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.editor-wrap input,.editor-wrap select{padding:.6rem;border:1px solid #ddd;border-radius:6px;font-size:.95rem;width:100%;margin-bottom:.8rem;outline:0}
+.editor-wrap textarea{width:100%;min-height:400px;padding:.8rem;border:1px solid #ddd;border-radius:6px;font-size:.9rem;line-height:1.6;font-family:monospace;resize:vertical;outline:0}
+.editor-wrap .btn-group{display:flex;gap:.5rem;margin-top:1rem}
+.editor-wrap .btn-group button{padding:.6rem 1.5rem;border:none;border-radius:6px;cursor:pointer;font-size:.95rem}
+.btn-save{background:#48bb78;color:#fff}
+.btn-save:hover{background:#38a169}
+.btn-preview{background:#667eea;color:#fff}
+.btn-preview:hover{background:#5a6fd8}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.msg{padding:.6rem 1rem;border-radius:6px;margin-bottom:1rem;display:none}
+.msg.ok{background:#c6f6d5;color:#276749;display:block}
+.msg.err{background:#fed7d7;color:#9b2c2c;display:block}
+</style>
+</head>
+<body>
+<div id="login">
+  <h2>🔐 JPREKI 管理後台</h2>
+  <input type="text" id="user" placeholder="帳號">
+  <input type="password" id="pass" placeholder="密碼">
+  <button id="loginBtn">登入</button>
+  <p class="error" id="loginErr"></p>
+</div>
+<div id="dashboard">
+  <header>
+    <h1>📝 編輯文章</h1>
+    <button id="logoutBtn">登出</button>
+  </header>
+  <div class="msg" id="msg"></div>
+  <div class="editor-wrap">
+    <input type="text" id="title" placeholder="文章標題">
+    <input type="text" id="desc" placeholder="Meta 描述 / 摘要">
+    <div class="field-row">
+      <select id="cat">
+        <option value="health">🏥 保健養生 → jpantao.com</option>
+        <option value="gaming">🎮 遊戲服務</option>
+        <option value="proxy">📦 代購服務</option>
+        <option value="apple">🍎 Apple 服務 → donaa.org</option>
+        <option value="shopping">🌍 跨境購物 → jpchu.com</option>
+      </select>
+      <input type="text" id="linkout" placeholder="目標外鏈 URL">
+    </div>
+    <input type="text" id="tags" placeholder="標籤 (逗號分隔)">
+    <textarea id="body" placeholder="Markdown 內容"></textarea>
+    <div class="btn-group">
+      <button class="btn-save" id="saveBtn">💾 儲存並發佈</button>
+      <button class="btn-preview" id="previewBtn">👁 預覽</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var TOKEN = null;
+  var login = document.getElementById('login');
+  var dash = document.getElementById('dashboard');
+  var errEl = document.getElementById('loginErr');
+  var msgEl = document.getElementById('msg');
+
+  function showMsg(t, c) { msgEl.textContent = t; msgEl.className = 'msg ' + c; }
+
+  document.getElementById('loginBtn').onclick = function() {
+    var u = document.getElementById('user').value.trim();
+    var p = document.getElementById('pass').value.trim();
+    if (!u || !p) { errEl.textContent='請輸入帳號和密碼'; errEl.style.display='block'; return; }
+    errEl.textContent = '登入中...'; errEl.style.color='#666'; errEl.style.display='block';
+    fetch('/api/login', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({username:u, password:p}) })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.success) {
+        TOKEN = d.token;
+        login.style.display = 'none';
+        dash.style.display = 'block';
+      } else {
+        errEl.textContent = d.message || '帳號或密碼錯誤';
+        errEl.style.color = '#e53e3e';
+      }
+    })
+    .catch(function() { errEl.textContent = '網路錯誤'; errEl.style.color = '#e53e3e'; });
+  };
+
+  document.getElementById('logoutBtn').onclick = function() {
+    TOKEN = null; login.style.display='flex'; dash.style.display='none';
+  };
+
+  document.getElementById('saveBtn').onclick = function() {
+    var title = document.getElementById('title').value.trim();
+    var desc = document.getElementById('desc').value.trim();
+    var cat = document.getElementById('cat').value;
+    var linkout = document.getElementById('linkout').value.trim();
+    var tagsRaw = document.getElementById('tags').value.trim();
+    var body = document.getElementById('body').value.trim();
+    if (!title || !body) { showMsg('請填寫標題和內容', 'err'); return; }
+    var tags = tagsRaw ? tagsRaw.split(/[,，]/).map(function(t){return t.trim()}).filter(Boolean) : [];
+    var today = new Date().toISOString().slice(0,10);
+    var slug = today + '-' + title.replace(/[^\w\u4e00-\u9fff]/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'').toLowerCase().slice(0,60);
+    var fm = '---\ntitle: "' + title + '"\ndescription: "' + desc + '"\ndate: ' + today + '\ncategory: "' + cat + '"\n';
+    if (linkout) fm += 'linkout: "' + linkout + '"\n';
+    if (tags.length) fm += 'tags:\n  - ' + tags.join('\n  - ') + '\n';
+    fm += '---\n\n' + body;
+    showMsg('正在儲存...', 'ok');
+    fetch('/api/save', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({token:TOKEN, filename:slug+'.md', content:fm}) })
+    .then(function(r){return r.json()})
+    .then(function(d){
+      if (d.success) {
+        showMsg('✅ ' + title + ' 已發佈！', 'ok');
+        document.getElementById('title').value='';
+        document.getElementById('desc').value='';
+        document.getElementById('linkout').value='';
+        document.getElementById('tags').value='';
+        document.getElementById('body').value='';
+      } else {
+        showMsg('❌ ' + (d.message||'儲存失敗'), 'err');
+      }
+    }).catch(function(){ showMsg('❌ 網路錯誤', 'err'); });
+  };
+
+  document.getElementById('previewBtn').onclick = function() {
+    var body = document.getElementById('body').value.trim();
+    if (!body) { showMsg('請先寫內容再預覽', 'err'); return; }
+    var w = window.open('', '_blank');
+    w.document.write('<html><head><meta charset="utf-8"><title>預覽</title><style>body{max-width:700px;margin:2rem auto;font-family:sans-serif;line-height:1.8;padding:1rem}</style></head><body>');
+    w.document.write(body.replace(/\n/g, '<br>'));
+    w.document.write('</body></html>');
+  };
+
+  document.getElementById('pass').addEventListener('keypress', function(e) { if (e.key==='Enter') document.getElementById('loginBtn').click(); });
+  document.getElementById('user').addEventListener('keypress', function(e) { if (e.key==='Enter') document.getElementById('loginBtn').click(); });
+})();
+</script>
+</body>
 </html>

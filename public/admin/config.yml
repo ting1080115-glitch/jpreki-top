@@ -2,8 +2,6 @@ backend:
   name: github
   repo: ting1080115-glitch/jpreki-top
   branch: main
-  base_url: https://jpreki-top.pages.dev
-  auth_endpoint: api/auth
 
 media_folder: assets/images
 public_folder: /assets/images

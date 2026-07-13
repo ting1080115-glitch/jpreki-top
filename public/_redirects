@@ -1,2 +1,1 @@
-# Cloudflare Pages 重定向規則
-/admin   /admin/   301
+/admin  /admin/  301
